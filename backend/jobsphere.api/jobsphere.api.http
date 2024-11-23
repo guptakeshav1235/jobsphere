@@ -1,0 +1,6 @@
+@jobsphere.api_HostAddress = http://localhost:5298
+
+GET {{jobsphere.api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
