@@ -2,6 +2,7 @@ using jobsphere.api.CustomValidation;
 using jobsphere.api.Data;
 using jobsphere.api.Mapping;
 using jobsphere.api.Repository.CompanyRepo;
+using jobsphere.api.Repository.JobRepo;
 using jobsphere.api.Repository.TokenRepo;
 using jobsphere.api.Repository.UserRepo;
 using Microsoft.AspNetCore.CookiePolicy;
@@ -31,6 +32,7 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+builder.Services.AddScoped<IJobRepository, JobRepository>();
 
 builder.Services.AddScoped<IsAuthenticatedAttribute>();
 

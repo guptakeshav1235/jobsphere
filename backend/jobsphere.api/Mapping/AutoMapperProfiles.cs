@@ -15,6 +15,15 @@ namespace jobsphere.api.Mapping
             CreateMap<Company, CompanyResponseDto>().ReverseMap();
             CreateMap<Company, CompanyDto>().ReverseMap();
             CreateMap<Company, UpdateCompanyDto>().ReverseMap();
+
+            CreateMap<PostJobDto, Job>()
+            .ForMember(dest => dest.Requirements, opt =>
+                        opt.MapFrom(src => src.Requirements != null
+                            ? src.Requirements.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                  .Select(r => r.Trim()).ToList()
+                            : new List<string>()));
+
+            CreateMap<Job, JobResponseDto>().ReverseMap();
         }
     }
 }
