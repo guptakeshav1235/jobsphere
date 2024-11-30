@@ -1,6 +1,7 @@
 using jobsphere.api.CustomValidation;
 using jobsphere.api.Data;
 using jobsphere.api.Mapping;
+using jobsphere.api.Repository.ApplicationRepo;
 using jobsphere.api.Repository.CompanyRepo;
 using jobsphere.api.Repository.JobRepo;
 using jobsphere.api.Repository.TokenRepo;
@@ -33,6 +34,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<IJobRepository, JobRepository>();
+builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
 
 builder.Services.AddScoped<IsAuthenticatedAttribute>();
 
