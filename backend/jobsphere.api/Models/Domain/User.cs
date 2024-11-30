@@ -2,6 +2,11 @@
 
 namespace jobsphere.api.Models.Domain
 {
+    public enum UserRoles
+    {
+        student,
+        recruiter
+    }
     public class User
     {
         public Guid Id { get; set; }= Guid.NewGuid();
@@ -26,13 +31,5 @@ namespace jobsphere.api.Models.Domain
 
         public DateTime CreatedAt { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
         public DateTime UpdatedAt { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
-    }
-
-    public static class UserRoles
-    {
-        public const string Student = "student";
-        public const string Recruiter = "recruiter";
-
-        public static readonly List<string> AllRoles = new List<string> { Student, Recruiter };
     }
 }
