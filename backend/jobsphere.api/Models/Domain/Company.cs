@@ -8,11 +8,11 @@ namespace jobsphere.api.Models.Domain
         public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string Website {  get; set; }
-        public string Location {  get; set; }
-        public string Logo {  get; set; }//URL to Company Logo
+        public string? Name { get; set; }
+        public string? Description { get; set; }
+        public string? Website {  get; set; }
+        public string? Location {  get; set; }
+        public string? Logo {  get; set; }//URL to Company Logo
 
         [Required]
         public Guid UserId { get; set; }
