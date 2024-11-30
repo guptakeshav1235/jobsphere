@@ -24,6 +24,12 @@ namespace jobsphere.api.Mapping
                             : new List<string>()));
 
             CreateMap<Job, JobResponseDto>().ReverseMap();
+
+            CreateMap<Application, ApplicationResponseDto>().ReverseMap();
+
+            CreateMap<Job, JobWithApplicantsDto>().ForMember(dest => dest.JobId, opt => opt.MapFrom(src => src.Id)).ReverseMap();
+            CreateMap<Application, ApplicationDto>().ForMember(dest => dest.ApplicationId, opt => opt.MapFrom(src => src.Id)).ReverseMap();
+            CreateMap<User, ApplicantDto>().ForMember(dest => dest.ApplicantId, opt => opt.MapFrom(src => src.Id)).ReverseMap();
         }
     }
 }

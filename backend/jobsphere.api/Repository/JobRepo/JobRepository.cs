@@ -34,6 +34,7 @@ namespace jobsphere.api.Repository.JobRepo
         {
             return await dbContext.Jobs
                                    .Include(j=>j.Company)
+                                   .Include(j=>j.Applications)
                                   .FirstOrDefaultAsync(j => j.Id == jobId);
         }
 
@@ -44,6 +45,20 @@ namespace jobsphere.api.Repository.JobRepo
                                   .Where(j => j.CreatedById == adminId)
                                   .OrderByDescending(j => j.CreatedAt)
                                   .ToListAsync();
+        }
+
+        public async Task AddApplicationToJobAsync(Job job, Application newApplication)
+        {
+            job.Applications.Add(newApplication);
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<Job> GetJobWithApplicantsAsync(Guid jobId)
+        {
+            return await dbContext.Jobs
+                                   .Include(j=>j.Applications)
+                                        .ThenInclude(a=>a.Applicant)
+                                   .FirstOrDefaultAsync(j => j.Id == jobId);
         }
     }
 }
