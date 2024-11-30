@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using jobsphere.api.Data;
 
@@ -11,9 +12,11 @@ using jobsphere.api.Data;
 namespace jobsphere.api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241125143725_fix company Table")]
+    partial class fixcompanyTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -238,7 +241,7 @@ namespace jobsphere.api.Migrations
                         .IsRequired();
 
                     b.HasOne("jobsphere.api.Models.Domain.Job", "Job")
-                        .WithMany("Applications")
+                        .WithMany()
                         .HasForeignKey("JobId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -291,11 +294,6 @@ namespace jobsphere.api.Migrations
                         .HasForeignKey("jobsphere.api.Models.Domain.UserProfile", "UserId1");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("jobsphere.api.Models.Domain.Job", b =>
-                {
-                    b.Navigation("Applications");
                 });
 
             modelBuilder.Entity("jobsphere.api.Models.Domain.User", b =>

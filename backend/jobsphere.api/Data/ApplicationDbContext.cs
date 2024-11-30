@@ -66,6 +66,13 @@ namespace jobsphere.api.Data
                 .WithMany()
                 .HasForeignKey(a => a.ApplicantId)
                 .OnDelete(DeleteBehavior.Restrict); // Change from Cascade to Restrict
+
+            // Define one-to-many relationship between Job and Applications
+            modelBuilder.Entity<Job>()
+            .HasMany(j => j.Applications)
+            .WithOne(a => a.Job)
+            .HasForeignKey(a => a.JobId)
+            .OnDelete(DeleteBehavior.Cascade);
         }
 
 

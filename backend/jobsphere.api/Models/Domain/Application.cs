@@ -3,6 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace jobsphere.api.Models.Domain
 {
+    public enum ApplicationStatus
+    {
+        pending,
+        accepted,
+        rejected
+    }
     public class Application
     {
         public Guid Id { get; set; }=Guid.NewGuid();
@@ -21,18 +27,9 @@ namespace jobsphere.api.Models.Domain
 
         [Required]
         [EnumDataType(typeof(ApplicationStatus))]
-        public string Status { get; set; } = ApplicationStatus.Pending;
+        public string Status { get; set; } = ApplicationStatus.pending.ToString();
 
         public DateTime CreatedAt { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
         public DateTime UpdatedAt { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
-    }
-
-    public static class ApplicationStatus
-    {
-        public const string Pending = "pending";
-        public const string Accepted = "accepted";
-        public const string Rejected = "rejected";
-
-        public static readonly List<string> AllStatus = new List<string> { Pending, Accepted, Rejected };
     }
 }

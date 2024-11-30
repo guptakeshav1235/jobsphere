@@ -43,6 +43,9 @@ namespace jobsphere.api.Models.Domain
         [ForeignKey(nameof(CreatedById))]
         public User CreatedBy { get; set; }
 
+        // Applications array - one-to-many relationship
+        public ICollection<Application> Applications { get; set; } = new List<Application>();
+
         public DateTime CreatedAt { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
         public DateTime UpdatedAt { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
     }
