@@ -13,19 +13,16 @@ const Navbar = () => {
                 </div>
                 <div className='flex items-center gap-3'>
                     <ul className='flex font-medium items-center gap-5'>
-                        <li>Home</li>
-                        <li>Jobs</li>
-                        <li>Browse</li>
-                        {/* <li><Link>Home</Link></li>
-                    <li><Link>Jobs</Link></li>
-                    <li><Link>Browse</Link></li> */}
+                        <li><Link to='/'>Home</Link></li>
+                        <li><Link to='/jobs'>Jobs</Link></li>
+                        <li><Link to='/browse'>Browse</Link></li>
                     </ul>
 
                     {
                         !user ? (
                             <div className='flex items-center gap-2 my-3'>
                                 <Link to='/login'><button className="btn btn-outline btn-accent">Login</button></Link>
-                                <Link to='/signup'><button className="btn text-white bg-[#6A38C2] hover:bg-base-300">Signup</button></Link>
+                                <Link to='/signup'><button className="btn text-white bg-[#6A38C2] hover:bg-[#461e89]">Signup</button></Link>
                             </div>
                         ) : (
                             <div className="dropdown dropdown-end my-3">
