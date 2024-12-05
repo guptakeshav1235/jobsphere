@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 import Navbar from '../../shared/Navbar'
 import LoadingSpinner from '../../shared/LoadingSpinner'
 import { Link, useNavigate } from 'react-router-dom'
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
 const Login = () => {
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
     const [input, setInput] = useState({
         email: "",
         password: "",
@@ -36,6 +37,8 @@ const Login = () => {
         onSuccess: () => {
             navigate('/');
             toast.success("User logged-in successfully");
+            //refetch the authUser
+            queryClient.invalidateQueries({ queryKey: ["authUser"] });
         },
         onError: (error) => {
             toast.error(error.message);
