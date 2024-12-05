@@ -4,6 +4,7 @@ import Login from './components/pages/auth/Login'
 import Signup from './components/pages/auth/Signup'
 import Home from './components/pages/homePage/Home'
 import { Toaster } from 'react-hot-toast'
+import Jobs from './components/pages/jobPage/Jobs'
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
+        <Route path='/jobs' element={<Jobs />} />
       </Routes>
       <Toaster
         position="bottom-right"
