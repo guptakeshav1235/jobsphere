@@ -1,10 +1,13 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React from 'react'
+import toast from 'react-hot-toast';
 import { FiLogOut, FiUser } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
+import LoadingSpinner from './LoadingSpinner';
 
 const Navbar = () => {
-    const { data: authUser, isLoading } = useQuery({
+    const queryClient = useQueryClient();
+    const { data: authUser, isLoading, isFetching } = useQuery({
         queryKey: ["authUser"],
         queryFn: async () => {
             try {
@@ -19,6 +22,31 @@ const Navbar = () => {
                 console.error(error);
                 throw error;
             }
+        }
+    });
+
+    const { mutate: logout } = useMutation({
+        mutationFn: async () => {
+            try {
+                const res = await fetch('url/api/user/logout', {
+                    method: "POST",
+                    credentials: "include"
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || "Something went wrong");
+            } catch (error) {
+                console.error(error);
+                throw error;
+            }
+        },
+        onSuccess: () => {
+            //refetch the authUser
+            queryClient.setQueryData(["authUser"], null);
+            toast.success("User logged-out successfully");
+        },
+        onError: (error) => {
+            toast.error(error.message || "Logout failed");
         }
     });
 
@@ -38,8 +66,13 @@ const Navbar = () => {
                     </ul>
 
                     {
-                        !isLoading && (
-                            authUser ? (
+                        !isLoading && !isFetching ? (
+                            !authUser ? (
+                                <div className='flex items-center gap-2 my-3'>
+                                    <Link to='/login'><button className="btn btn-outline btn-accent">Login</button></Link>
+                                    <Link to='/signup'><button className="btn text-white bg-[#6A38C2] hover:bg-[#461e89]">Signup</button></Link>
+                                </div>
+                            ) : (
                                 <div className="dropdown dropdown-end my-3">
                                     <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                                         <div className="w-24 rounded-full">
@@ -56,7 +89,7 @@ const Navbar = () => {
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <h4 className='text-lg font-bold'>{authUser.fullName}</h4>
+                                                    <h4 className='text-lg font-bold'>Keshav Gupta</h4>
                                                     <p className='text-lg text-gray-500'>I'm a Software Developer.</p>
                                                 </div>
                                             </div>
@@ -68,7 +101,7 @@ const Navbar = () => {
                                                         role="button"
                                                         className="relative overflow-hidden before:absolute before:bottom-0 before:left-0 before:h-[2px] before:w-0 before:bg-current before:transition-all before:duration-300 hover:before:w-full"
                                                     >
-                                                        View Profile
+                                                        <Link to='/profile'>View Profile</Link>
                                                     </a>
                                                 </div>
                                                 <div className='flex w-fit items-center gap-4'>
@@ -76,6 +109,10 @@ const Navbar = () => {
                                                     <a
                                                         role="button"
                                                         className="relative overflow-hidden before:absolute before:bottom-0 before:left-0 before:h-[2px] before:w-0 before:bg-current before:transition-all before:duration-300 hover:before:w-full"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            logout();
+                                                        }}
                                                     >
                                                         Logout
                                                     </a>
@@ -84,12 +121,9 @@ const Navbar = () => {
                                         </div>
                                     </ul>
                                 </div>
-                            ) : (
-                                <div className='flex items-center gap-2 my-3'>
-                                    <Link to='/login'><button className="btn btn-outline btn-accent">Login</button></Link>
-                                    <Link to='/signup'><button className="btn text-white bg-[#6A38C2] hover:bg-[#461e89]">Signup</button></Link>
-                                </div>
                             )
+                        ) : (
+                            <div><LoadingSpinner /></div>
                         )
                     }
                 </div>
