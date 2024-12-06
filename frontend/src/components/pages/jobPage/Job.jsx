@@ -1,7 +1,10 @@
 import React from 'react'
 import { FaRegBookmark } from 'react-icons/fa6'
+import { useNavigate } from 'react-router-dom'
 
 const Job = () => {
+    const navigate = useNavigate();
+    const jobId = "qt21yiody32o43i";
     return (
         <div className='p-5 rounded-md shadow-2xl bg-base-100 border border-gray-100'>
             <div className='flex items-center justify-between'>
@@ -36,7 +39,7 @@ const Job = () => {
                 <span className="badge badge-outline text-[#7209b7] font-bold">24LPA</span>
             </div>
             <div className='flex items-center gap-4 mt-4'>
-                <button className='btn btn-outline btn-accent'>Details</button>
+                <button className='btn btn-outline btn-accent' onClick={() => navigate(`/job/description/${jobId}`)}>Details</button>
                 <button className='btn text-white bg-[#6A38C2] hover:bg-[#461e89]'>Save For Later</button>
             </div>
         </div>
