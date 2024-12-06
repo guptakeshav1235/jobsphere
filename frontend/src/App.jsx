@@ -7,6 +7,7 @@ import { Toaster } from 'react-hot-toast'
 import Jobs from './components/pages/jobPage/Jobs'
 import Browse from './components/pages/browsePage/Browse'
 import Profile from './components/pages/profilePage/Profile'
+import JobDescription from './components/pages/jobDescriptionPage/JobDescription'
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/jobs' element={<Jobs />} />
+        <Route path='/job/description/:id' element={<JobDescription />} />
         <Route path='/browse' element={<Browse />} />
         <Route path='/profile' element={<Profile />} />
       </Routes>
