@@ -1,12 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Navbar from '../../shared/Navbar'
 import { MdModeEditOutline, MdOutlineEmail } from 'react-icons/md'
 import { LuContact } from 'react-icons/lu'
 import AppliedJobTable from './AppliedJobTable'
+import UpdateProfileModal from './UpdateProfileModal'
+import { useQuery } from '@tanstack/react-query'
 
-const skills = ["C/C++", "C#", "JavaScript", "React.js", "ASP.NET core"]
 const Profile = () => {
-    const isResume = true;
+    const [open, setOpen] = useState(false);
+    const { data: authUser } = useQuery({ queryKey: ["authUser"] });
+
+    // const skills = authUser?.profile?.skills
+    const isResume = authUser?.profile?.resume;
     return (
         <div>
             <Navbar />
@@ -15,32 +20,32 @@ const Profile = () => {
                     <div className='flex items-center gap-4'>
                         <div className="avatar">
                             <div className="w-20 rounded-full">
-                                <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                                <img src={authUser?.profile?.profilePhoto} />
                             </div>
                         </div>
                         <div>
-                            <h1 className='font-medium text-xl'>Full Name</h1>
-                            <p>Description</p>
+                            <h1 className='font-medium text-xl'>{authUser?.fullName}</h1>
+                            <p>{authUser?.profile?.bio}</p>
                         </div>
                     </div>
-                    <button className='btn btn-outline btn-accent text-right'><MdModeEditOutline /></button>
+                    <button className='btn btn-outline btn-accent text-right' onClick={() => setOpen(true)}><MdModeEditOutline /></button>
                 </div>
                 <div className='my-5'>
                     <div className='flex items-center gap-3 my-2'>
                         <MdOutlineEmail />
-                        <span>guptakeshav1235@gmail.com</span>
+                        <span>{authUser?.email}</span>
                     </div>
 
                     <div className='flex items-center gap-3 my-2'>
                         <LuContact />
-                        <span>9456939893</span>
+                        <span>{authUser?.phoneNumber}</span>
                     </div>
                 </div>
                 <div>
                     <h1>Skills</h1>
                     <div className='flex items-center gap-1'>
                         {
-                            skills.length !== 0 ? skills.map((item, index) => (
+                            authUser?.profile?.skills.length !== 0 ? authUser?.profile?.skills.map((item, index) => (
                                 <span className="badge badge-neutral" key={index}>{item}</span>
                             )) : <span>NA</span>
                         }
@@ -51,7 +56,7 @@ const Profile = () => {
                         <span className="label-text text-lg font-bold">Resume</span>
                     </label>
                     {
-                        isResume ? <a target='blank' href='https://www.google.com' className='-mt-4 text-blue-500 w-full hover:underline cursor-pointer'>Keshav Gupta</a> : <span>NA</span>
+                        isResume ? <a target='blank' href={authUser?.profile?.resume} className='-mt-4 text-blue-500 w-full hover:underline cursor-pointer'>{authUser?.profile?.resumeOriginalName}</a> : <span>NA</span>
                     }
                 </div>
             </div>
@@ -60,6 +65,7 @@ const Profile = () => {
                 {/* Applied Job Table */}
                 <AppliedJobTable />
             </div>
+            <UpdateProfileModal open={open} setOpen={setOpen} authUser={authUser} />
         </div>
     )
 }
