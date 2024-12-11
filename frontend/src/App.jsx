@@ -8,6 +8,9 @@ import Browse from './components/pages/browsePage/Browse'
 import Profile from './components/pages/profilePage/Profile'
 import JobDescription from './components/pages/jobDescriptionPage/JobDescription'
 import useGetAllJobs from './components/hooks/useGetAllJobs'
+import Companies from './components/pages/admin/companiesPage/Companies'
+import CreateCompany from './components/pages/admin/companiesPage/CreateCompany'
+import CompanyInfo from './components/pages/admin/companiesPage/CompanyInfo'
 
 function App() {
   const { getAllJobs, isLoading } = useGetAllJobs();
@@ -21,6 +24,11 @@ function App() {
         <Route path='/job/description/:id' element={<JobDescription />} />
         <Route path='/browse' element={<Browse />} />
         <Route path='/profile' element={<Profile />} />
+
+        {/* Implementing routes for admin */}
+        <Route path='/admin/companies' element={<Companies />} />
+        <Route path='/admin/companies/create' element={<CreateCompany />} />
+        <Route path='/admin/companies/:id' element={<CompanyInfo />} />
       </Routes>
       <Toaster
         position="bottom-right"
