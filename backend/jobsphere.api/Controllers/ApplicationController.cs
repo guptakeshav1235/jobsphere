@@ -24,7 +24,7 @@ namespace jobsphere.api.Controllers
             this.jobRepository = jobRepository;
             this.mapper = mapper;
         }
-        [HttpGet("apply/{id:Guid}")]
+        [HttpPost("apply/{id:Guid}")]
         public async Task<IActionResult> ApplyJob([FromRoute] Guid id)
         {
             var userId = HttpContext.Items["UserId"] as string;

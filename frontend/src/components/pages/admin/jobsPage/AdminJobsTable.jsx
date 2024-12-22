@@ -1,49 +1,41 @@
 import React, { useEffect, useState } from 'react'
 import { IoEllipsisHorizontal } from 'react-icons/io5';
 import { MdEdit } from 'react-icons/md';
-import useGetAllCompanies from '../../../hooks/useGetAllCompanies';
 import { useNavigate } from 'react-router-dom';
+import useGetAllAdminJobs from '../../../hooks/useGetAllAdminJobs';
 
-const CompaniesTable = ({ filter }) => {
-    const { getAllCompanies } = useGetAllCompanies();
-    const [filterCompany, setFilterCompany] = useState(getAllCompanies);
+const AdminJobsTable = ({ filter }) => {
+    const { getAllAdminJobs } = useGetAllAdminJobs();
+    const [filterJob, setFilterJob] = useState(getAllAdminJobs);
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        const filteredCompany = getAllCompanies?.filter(company =>
-            company?.name?.toLowerCase().includes(filter.toLowerCase())
+        const filteredJob = getAllAdminJobs?.filter(job =>
+            job?.company?.name?.toLowerCase().includes(filter.toLowerCase()) || job?.title?.toLowerCase().includes(filter.toLowerCase())
         );
-        setFilterCompany(filteredCompany);
-    }, [filter, getAllCompanies]);
+        setFilterJob(filteredJob);
+    }, [filter, getAllAdminJobs]);
     return (
         <div className="">
             <table className="table">
                 {/* head */}
                 <thead>
                     <tr className='text-[16px] border-t border-b border-gray-400'>
-                        <th>Logo</th>
-                        <th>Name</th>
+                        <th>Company Name</th>
+                        <th>Role</th>
                         <th>Date</th>
                         <th className='text-right'>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {
-                        filterCompany?.length > 0 ? (
-                            filterCompany?.map((company) => (
-                                <tr key={company.id} className='border-t border-b border-gray-400'>
-                                    <td>
-                                        <div className="avatar-group -space-x-6 rtl:space-x-reverse">
-                                            <div className="avatar">
-                                                <div className="w-20">
-                                                    <img src={company?.logo} />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>{company?.name}</td>
-                                    <td>{company?.createdAt?.split("T")[0]}</td>
+                        filterJob?.length > 0 ? (
+                            filterJob?.map((job) => (
+                                <tr className='border-t border-b border-gray-400'>
+                                    <td>{job?.company?.name}</td>
+                                    <td>{job?.title}</td>
+                                    <td>{job?.createdAt?.split("T")[0]}</td>
                                     <td className='text-right cursor-pointer'>
                                         <div className="dropdown my-3 text">
                                             <div tabIndex={0}>
@@ -66,7 +58,7 @@ const CompaniesTable = ({ filter }) => {
                         ) : (
                             <tr>
                                 <td colSpan="4" className="text-xl font-medium text-center py-5">
-                                    No companies found.
+                                    No Jobs found.
                                 </td>
                             </tr>
                         )
@@ -77,4 +69,4 @@ const CompaniesTable = ({ filter }) => {
     )
 }
 
-export default CompaniesTable
+export default AdminJobsTable

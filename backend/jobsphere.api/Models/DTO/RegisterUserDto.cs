@@ -11,5 +11,6 @@ namespace jobsphere.api.Models.DTO
         public string? Password { get; set; }
         [EnumDataType(typeof(UserRoles))]
         public string? Role { get; set; }
+        public IFormFile File { get; set; }
     }
 }

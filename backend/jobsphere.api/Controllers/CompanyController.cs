@@ -2,6 +2,7 @@
 using jobsphere.api.CustomValidation;
 using jobsphere.api.Models.Domain;
 using jobsphere.api.Models.DTO;
+using jobsphere.api.Repository.CloudinaryRepo;
 using jobsphere.api.Repository.CompanyRepo;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,11 +16,13 @@ namespace jobsphere.api.Controllers
     public class CompanyController : ControllerBase
     {
         private readonly ICompanyRepository companyRepository;
+        private readonly ICloudinaryRepository cloudinaryRepository;
         private readonly IMapper mapper;
 
-        public CompanyController(ICompanyRepository companyRepository, IMapper mapper)
+        public CompanyController(ICompanyRepository companyRepository, ICloudinaryRepository cloudinaryRepository, IMapper mapper)
         {
             this.companyRepository = companyRepository;
+            this.cloudinaryRepository = cloudinaryRepository;
             this.mapper = mapper;
         }
         [HttpPost("register")]
@@ -80,17 +83,23 @@ namespace jobsphere.api.Controllers
         }
 
         [HttpPut("update/{id:Guid}")]
-        public async Task<IActionResult> UpdateCompany([FromRoute] Guid id, [FromBody] UpdateCompanyDto updateCompanyDto)
+        public async Task<IActionResult> UpdateCompany([FromRoute] Guid id, [FromForm] UpdateCompanyDto updateCompanyDto)
         {
-            //var file = Request.Form.Files.FirstOrDefault();
-            //Implementing Cloudinary
-
-            var existingCompany = await companyRepository.GetCompanyByIdAsync(id);
-            if(existingCompany == null)
+            var company = await companyRepository.GetCompanyByIdAsync(id);
+            if(company == null)
             {
                 return NotFound(new { error = "Company Not Found" });
             }
 
+            //Handle CompanyLogo
+            if (updateCompanyDto.File != null)
+            {
+                var fileBase64 = FileHelper.ConvertToBase64(updateCompanyDto.File);
+                var cloudinaryLogoUrl = await cloudinaryRepository.UploadLogoAsync(fileBase64, updateCompanyDto.File.FileName);
+                company.Logo = cloudinaryLogoUrl;
+            }
+
+            company.UpdatedAt = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
             //Update the database after mapping Dto->Domain
             var updatedCompany = await companyRepository.UpdateCompanyAsync(id, (mapper.Map<Company>(updateCompanyDto)));
             if(updatedCompany == null)

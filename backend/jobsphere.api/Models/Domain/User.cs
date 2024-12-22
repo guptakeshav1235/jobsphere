@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace jobsphere.api.Models.Domain
 {
@@ -27,6 +28,7 @@ namespace jobsphere.api.Models.Domain
         [Required]
         [EnumDataType(typeof(UserRoles))]
         public string Role { get; set; }// Stored as a string in the database
+        [JsonIgnore]
         public UserProfile Profile { get; set; }
 
         public DateTime CreatedAt { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));

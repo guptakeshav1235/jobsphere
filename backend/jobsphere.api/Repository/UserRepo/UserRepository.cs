@@ -25,7 +25,9 @@ namespace jobsphere.api.Repository.UserRepo
 
         public async Task<User> GetUserByIdAsync(Guid userId)
         {
-            return await dbContext.Users.FindAsync(userId);
+            return await dbContext.Users
+                                   .Include(u => u.Profile)
+                                   .FirstOrDefaultAsync(u => u.Id == userId);
         }
 
         public async Task<User> UpdateProfileAsync(User user)

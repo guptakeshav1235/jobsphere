@@ -9,6 +9,6 @@ namespace jobsphere.api.Models.DTO
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public string Role { get; set; }
-        public UserProfile Profile { get; set; }
+        public UserProfileDto Profile { get; set; }
     }
 }

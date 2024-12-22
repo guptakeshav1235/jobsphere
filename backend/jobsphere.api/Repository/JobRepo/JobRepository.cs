@@ -35,6 +35,7 @@ namespace jobsphere.api.Repository.JobRepo
             return await dbContext.Jobs
                                    .Include(j=>j.Company)
                                    .Include(j=>j.Applications)
+                                        .ThenInclude(a => a.Applicant)
                                   .FirstOrDefaultAsync(j => j.Id == jobId);
         }
 

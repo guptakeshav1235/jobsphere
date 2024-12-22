@@ -15,6 +15,8 @@ namespace jobsphere.api.Models.DTO
         public string JobType { get; set; }
         public string Position { get; set; }
         public CompanyResponseDto Company { get; set; }
+        public ICollection<ApplicationDto> Applications { get; set; }
         public Guid CreatedById { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }
