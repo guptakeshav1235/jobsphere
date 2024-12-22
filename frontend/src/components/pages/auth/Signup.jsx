@@ -36,7 +36,7 @@ const Signup = () => {
             }
         },
         onSuccess: () => {
-            navigate('/login');
+            navigate('/');
             toast.success("Account created successfully");
             //refetch the authUser
             queryClient.invalidateQueries({ queryKey: ["authUser"] });

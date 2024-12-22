@@ -8,6 +8,6 @@ namespace jobsphere.api.Models.DTO
         public string Website { get; set; }
         public string Location { get; set; }
         public string Logo { get; set; }//URL to Company Logo
-        public User User { get; set; }
+        public UserResponseDto User { get; set; }
     }
 }

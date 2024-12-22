@@ -2,6 +2,7 @@
 using jobsphere.api.CustomValidation;
 using jobsphere.api.Models.Domain;
 using jobsphere.api.Models.DTO;
+using jobsphere.api.Repository.CloudinaryRepo;
 using jobsphere.api.Repository.TokenRepo;
 using jobsphere.api.Repository.UserRepo;
 using Microsoft.AspNetCore.Http;
@@ -15,16 +16,18 @@ namespace jobsphere.api.Controllers
     {
         private readonly IUserRepository userRepository;
         private readonly ITokenRepository tokenRepository;
+        private readonly ICloudinaryRepository cloudinaryRepository;
         private readonly IMapper mapper;
 
-        public UserController(IUserRepository userRepository, ITokenRepository tokenRepository, IMapper mapper)
+        public UserController(IUserRepository userRepository, ITokenRepository tokenRepository, ICloudinaryRepository cloudinaryRepository, IMapper mapper)
         {
             this.userRepository = userRepository;
             this.tokenRepository = tokenRepository;
+            this.cloudinaryRepository = cloudinaryRepository;
             this.mapper = mapper;
         }
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterUserDto registerUserDto)
+        public async Task<IActionResult> Register([FromForm] RegisterUserDto registerUserDto)
         {
             if (string.IsNullOrEmpty(registerUserDto.FullName) ||
                 string.IsNullOrEmpty(registerUserDto.Email) ||
@@ -46,6 +49,18 @@ namespace jobsphere.api.Controllers
             //mapping Dto->Domain
             var user=mapper.Map<User>(registerUserDto);
             user.Password=hashedPassword;
+
+            //Handle ProfilePhoto
+            if (registerUserDto.File != null)
+            {
+                var fileBase64 = FileHelper.ConvertToBase64(registerUserDto.File);
+                var cloudinaryImageUrl = await cloudinaryRepository.UploadImageAsync(fileBase64, registerUserDto.File.FileName);
+                user.Profile = new UserProfile
+                {
+                    UserId=user.Id,
+                    ProfilePhoto = cloudinaryImageUrl
+                };
+            }
 
             var newUser=await userRepository.CreateUserAsync(user);
 
@@ -107,7 +122,7 @@ namespace jobsphere.api.Controllers
             {
                 Expires = DateTimeOffset.UtcNow,
                 HttpOnly = true,
-                SameSite = SameSiteMode.Strict,
+                SameSite = SameSiteMode.None,
                 Secure = true,
             });
 
@@ -116,7 +131,7 @@ namespace jobsphere.api.Controllers
 
         [HttpPost("profile/update")]
         [ServiceFilter(typeof(IsAuthenticatedAttribute))]
-        public async Task<IActionResult> UpdateProfile([FromBody] UpdateUserProfileDto updateUserProfileDto)
+        public async Task<IActionResult> UpdateProfile([FromForm] UpdateUserProfileDto updateUserProfileDto)
         {
             var userId = HttpContext.Items["UserId"] as string;
             if (string.IsNullOrEmpty(userId))
@@ -135,6 +150,22 @@ namespace jobsphere.api.Controllers
             if (!string.IsNullOrEmpty(updateUserProfileDto.Bio)) user.Profile.Bio = updateUserProfileDto.Bio;
             if (!string.IsNullOrEmpty(updateUserProfileDto.Skills)) user.Profile.Skills= [.. updateUserProfileDto.Skills.Split(',')];
 
+            //Handle Resume and ProfilePhoto
+            if (updateUserProfileDto.File != null)
+            {
+                var base64Resume = FileHelper.ConvertToBase64(updateUserProfileDto.File);
+                var cloudinaryResumeUrl = await cloudinaryRepository.UploadFileAsync(base64Resume, updateUserProfileDto.File.FileName);
+                user.Profile.Resume = cloudinaryResumeUrl;
+                user.Profile.ResumeOriginalName = updateUserProfileDto.File.FileName;
+            }
+
+            if (updateUserProfileDto.ImageFile!=null)
+            {
+                var base64Image = FileHelper.ConvertToBase64(updateUserProfileDto.ImageFile);
+                var cloudinaryImageUrl = await cloudinaryRepository.UploadImageAsync(base64Image, updateUserProfileDto.ImageFile.FileName);
+                user.Profile.ProfilePhoto = cloudinaryImageUrl;
+            }
+
             user.UpdatedAt= TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
 
             var updatedUser=await userRepository.UpdateProfileAsync(user);
@@ -142,5 +173,27 @@ namespace jobsphere.api.Controllers
             //Return Ok after mapping Domain->Dto
             return Ok(mapper.Map<UpdateUserProfileResponseDto>(updatedUser));
         }
+
+        [HttpGet("me")]
+        [ServiceFilter(typeof(IsAuthenticatedAttribute))]
+        public async Task<IActionResult> GetMe()
+        {
+            //var user = HttpContext.Items["User"] as User;
+            var userId = HttpContext.Items["UserId"] as string;
+            var user = await userRepository.GetUserByIdAsync(Guid.Parse(userId));
+            return Ok(mapper.Map<UserResponseDto>(user));
+        }
+
     }
+    public static class FileHelper
+    {
+        public static string ConvertToBase64(IFormFile file)
+        {
+            using var memoryStream = new MemoryStream();
+            file.CopyTo(memoryStream);
+            var fileBytes = memoryStream.ToArray();
+            return Convert.ToBase64String(fileBytes);
+        }
+    }
+
 }

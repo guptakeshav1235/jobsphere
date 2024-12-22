@@ -5,7 +5,9 @@
         public string FullName { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
-        public string Bio { get; set; }
-        public string Skills { get; set; }
+        public string? Bio { get; set; }
+        public string? Skills { get; set; }
+        public IFormFile? File { get; set; }
+        public IFormFile? ImageFile { get; set; }
     }
 }

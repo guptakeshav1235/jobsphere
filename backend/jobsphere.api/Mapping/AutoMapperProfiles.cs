@@ -11,6 +11,7 @@ namespace jobsphere.api.Mapping
             CreateMap<User, RegisterUserDto>().ReverseMap();
             CreateMap<User, UserResponseDto>().ReverseMap();
             CreateMap<User, UpdateUserProfileResponseDto>().ReverseMap();
+            CreateMap<UserProfile, UserProfileDto>().ReverseMap();
 
             CreateMap<Company, CompanyResponseDto>().ReverseMap();
             CreateMap<Company, CompanyDto>().ReverseMap();

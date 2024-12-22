@@ -2,6 +2,7 @@ using jobsphere.api.CustomValidation;
 using jobsphere.api.Data;
 using jobsphere.api.Mapping;
 using jobsphere.api.Repository.ApplicationRepo;
+using jobsphere.api.Repository.CloudinaryRepo;
 using jobsphere.api.Repository.CompanyRepo;
 using jobsphere.api.Repository.JobRepo;
 using jobsphere.api.Repository.TokenRepo;
@@ -31,10 +32,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options=>
 options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString")));
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<IJobRepository, JobRepository>();
 builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
+builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+builder.Services.AddScoped<ICloudinaryRepository, CloudinaryRepository>();
 
 builder.Services.AddScoped<IsAuthenticatedAttribute>();
 
@@ -48,6 +50,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(policy =>
+    policy.WithOrigins("http://localhost:3000")
+          .AllowAnyMethod()
+          .AllowAnyHeader()
+          .AllowCredentials());
 
 app.UseHttpsRedirection();
 

@@ -33,8 +33,9 @@ namespace jobsphere.api.Repository.TokenRepo
             {
                 MaxAge = TimeSpan.FromHours(1),
                 HttpOnly = true,
-                SameSite = SameSiteMode.Strict,
+                SameSite = SameSiteMode.None,
                 Secure=true,
+                Path = "/"
             });
         }
     }
