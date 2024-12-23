@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { IoEllipsisHorizontal } from 'react-icons/io5';
+import { IoEllipsisHorizontal, IoEye } from 'react-icons/io5';
 import { MdEdit } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import useGetAllAdminJobs from '../../../hooks/useGetAllAdminJobs';
@@ -17,7 +17,7 @@ const AdminJobsTable = ({ filter }) => {
         setFilterJob(filteredJob);
     }, [filter, getAllAdminJobs]);
     return (
-        <div className="">
+        <div>
             <table className="table">
                 {/* head */}
                 <thead>
@@ -32,7 +32,7 @@ const AdminJobsTable = ({ filter }) => {
                     {
                         filterJob?.length > 0 ? (
                             filterJob?.map((job) => (
-                                <tr className='border-t border-b border-gray-400'>
+                                <tr key={job?.id} className='border-t border-b border-gray-400'>
                                     <td>{job?.company?.name}</td>
                                     <td>{job?.title}</td>
                                     <td>{job?.createdAt?.split("T")[0]}</td>
@@ -45,9 +45,13 @@ const AdminJobsTable = ({ filter }) => {
                                             </div>
                                             <ul tabIndex={0} className="dropdown-content menu bg-[#f7f5f5] rounded-box z-[1] w-32 py-5 shadow">
                                                 <div className=''>
-                                                    <div onClick={() => navigate(`/admin/companies/${company?.id}`)} className='flex items-center gap-2 w-fit'>
+                                                    <div onClick={() => navigate(`/admin/companies/${job?.id}`)} className='flex items-center gap-2 w-fit'>
                                                         <MdEdit />
                                                         <span>Edit</span>
+                                                    </div>
+                                                    <div onClick={() => navigate(`/admin/jobs/${job?.id}/applicants`)} className="flex items-center w-fit gap-2 mt-2">
+                                                        <IoEye />
+                                                        <span>Applicants</span>
                                                     </div>
                                                 </div>
                                             </ul>
