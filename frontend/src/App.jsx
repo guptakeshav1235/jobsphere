@@ -13,6 +13,7 @@ import CreateCompany from './components/pages/admin/companiesPage/CreateCompany'
 import CompanyInfo from './components/pages/admin/companiesPage/CompanyInfo'
 import AdminJobs from './components/pages/admin/jobsPage/AdminJobs'
 import PostJob from './components/pages/admin/jobsPage/PostJob'
+import Applicants from './components/pages/admin/applicantsPage/Applicants'
 
 function App() {
   const { getAllJobs, isLoading } = useGetAllJobs();
@@ -33,6 +34,7 @@ function App() {
         <Route path='/admin/companies/:id' element={<CompanyInfo />} />
         <Route path='/admin/jobs' element={<AdminJobs />} />
         <Route path='/admin/jobs/create' element={<PostJob />} />
+        <Route path='/admin/jobs/:id/applicants' element={<Applicants />} />
       </Routes>
       <Toaster
         position="bottom-right"
