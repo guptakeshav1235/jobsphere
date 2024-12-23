@@ -5,13 +5,16 @@ import { LuContact } from 'react-icons/lu'
 import AppliedJobTable from './AppliedJobTable'
 import UpdateProfileModal from './UpdateProfileModal'
 import { useQuery } from '@tanstack/react-query'
+import useGetAppliedJobs from '../../hooks/useGetAppliedJobs'
 
 const Profile = () => {
     const [open, setOpen] = useState(false);
     const { data: authUser } = useQuery({ queryKey: ["authUser"] });
+    const { getAppliedJobs, isApplied, isError } = useGetAppliedJobs();
 
     // const skills = authUser?.profile?.skills
     const isResume = authUser?.profile?.resume;
+    if (isApplied) return <span className='flex items-center justify-center'>Loading...</span>
     return (
         <div>
             <Navbar />
@@ -61,10 +64,12 @@ const Profile = () => {
                 </div>
             </div>
             <h1 className='flex justify-center font-bold text-lg my-5 mx-2'>Applied Jobs</h1>
-            <div className='max-w-4xl mx-auto bg-base-200 rounded-2-xl'>
-                {/* Applied Job Table */}
-                <AppliedJobTable />
-            </div>
+            {isError ? <p className='text-sm text-red-600 font-bold text-center my-3'>*You haven't applied any job yet</p> :
+                <div className='max-w-4xl mx-auto bg-base-200 rounded-2-xl'>
+                    {/* Applied Job Table */}
+                    <AppliedJobTable getAppliedJobs={getAppliedJobs} />
+                </div>
+            }
             <UpdateProfileModal open={open} setOpen={setOpen} authUser={authUser} />
         </div>
     )

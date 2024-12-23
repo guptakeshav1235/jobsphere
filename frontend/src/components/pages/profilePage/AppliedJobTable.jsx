@@ -1,6 +1,10 @@
 import React from 'react'
+import useGetAppliedJobs from '../../hooks/useGetAppliedJobs';
 
-const AppliedJobTable = () => {
+const AppliedJobTable = ({ getAppliedJobs }) => {
+    // const { getAppliedJobs } = useGetAppliedJobs();
+    console.log("getAppliedJobs", getAppliedJobs);
+
     return (
         <div className="overflow-x-auto">
             <table className="table">
@@ -15,12 +19,12 @@ const AppliedJobTable = () => {
                 </thead>
                 <tbody>
                     {
-                        [1, 2].map((item, index) => (
-                            <tr key={index} className='border border-gray-200 cursor-pointer hover:bg-base-300'>
-                                <td>06-12-2024</td>
-                                <td>Frontend Developer</td>
-                                <td>Google</td>
-                                <td className='text-right'><span className="badge badge-neutral">Selected</span></td>
+                        getAppliedJobs?.map((appliedJob) => (
+                            <tr key={appliedJob?.id} className='border border-gray-200 cursor-pointer hover:bg-base-300'>
+                                <td>{appliedJob?.createdAt?.split("T")[0]}</td>
+                                <td>{appliedJob?.job?.title}</td>
+                                <td>{appliedJob?.job?.company?.name}</td>
+                                <td className='text-right'><span className={`badge p-4 text-white ${appliedJob?.status === "rejected" ? 'bg-red-500' : appliedJob?.status === 'pending' ? 'bg-gray-500' : 'bg-green-500'}`}>{appliedJob?.status.toUpperCase()}</span></td>
                             </tr>
                         ))
                     }
