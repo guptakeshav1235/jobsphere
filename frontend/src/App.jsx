@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import Login from './components/pages/auth/Login'
 import Signup from './components/pages/auth/Signup'
 import Home from './components/pages/homePage/Home'
@@ -15,19 +15,21 @@ import AdminJobs from './components/pages/admin/jobsPage/AdminJobs'
 import PostJob from './components/pages/admin/jobsPage/PostJob'
 import Applicants from './components/pages/admin/applicantsPage/Applicants'
 import ProtectedRoutes from './components/pages/admin/ProtectedRoutes'
+import { useQuery } from '@tanstack/react-query'
 
 function App() {
   const { getAllJobs, isLoading } = useGetAllJobs();
+  const { data: authUser } = useQuery({ queryKey: ["authUser"] });
   return (
     <div>
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
-        <Route path='/jobs' element={<Jobs getAllJobs={getAllJobs} isLoading={isLoading} />} />
+        <Route path='/jobs' element={authUser ? <Jobs getAllJobs={getAllJobs} isLoading={isLoading} /> : <Navigate to={'/login'} />} />
         <Route path='/job/description/:id' element={<JobDescription />} />
-        <Route path='/browse' element={<Browse />} />
-        <Route path='/profile' element={<Profile />} />
+        <Route path='/browse' element={authUser ? <Browse /> : <Navigate to={'/login'} />} />
+        <Route path='/profile' element={authUser ? <Profile /> : <Navigate to={'/login'} />} />
 
         {/* Implementing routes for admin */}
         <Route path='/admin/companies' element={<ProtectedRoutes><Companies /></ProtectedRoutes>} />

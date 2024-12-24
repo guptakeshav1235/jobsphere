@@ -14,61 +14,66 @@ const Profile = () => {
 
     // const skills = authUser?.profile?.skills
     const isResume = authUser?.profile?.resume;
-    if (isApplied) return <span className='flex items-center justify-center'>Loading...</span>
     return (
         <div>
             <Navbar />
-            <div className='max-w-4xl mx-auto bg-base-200 border border-gray-400 rounded-2xl my-14 p-8'>
-                <div className='flex justify-between'>
-                    <div className='flex items-center gap-4'>
-                        <div className="avatar">
-                            <div className="w-20 rounded-full">
-                                <img src={authUser?.profile?.profilePhoto} />
+            {
+                isApplied ? <span className='flex items-center justify-center'>Loading...</span> :
+                    <>
+                        <div className='max-w-4xl mx-auto bg-base-200 border border-gray-400 rounded-2xl my-14 p-8'>
+                            <div className='flex justify-between'>
+                                <div className='flex items-center gap-4'>
+                                    <div className="avatar">
+                                        <div className="w-20 rounded-full">
+                                            <img src={authUser?.profile?.profilePhoto} />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h1 className='font-medium text-xl'>{authUser?.fullName}</h1>
+                                        <p>{authUser?.profile?.bio}</p>
+                                    </div>
+                                </div>
+                                <button className='btn btn-outline btn-accent text-right' onClick={() => setOpen(true)}><MdModeEditOutline /></button>
+                            </div>
+                            <div className='my-5'>
+                                <div className='flex items-center gap-3 my-2'>
+                                    <MdOutlineEmail />
+                                    <span>{authUser?.email}</span>
+                                </div>
+
+                                <div className='flex items-center gap-3 my-2'>
+                                    <LuContact />
+                                    <span>{authUser?.phoneNumber}</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h1>Skills</h1>
+                                <div className='flex items-center gap-1'>
+                                    {
+                                        authUser?.profile?.skills.length !== 0 ? authUser?.profile?.skills.map((item, index) => (
+                                            <span className="badge badge-neutral" key={index}>{item}</span>
+                                        )) : <span>NA</span>
+                                    }
+                                </div>
+                            </div>
+                            <div className='grid w-full max-w-sm items-center gap-2'>
+                                <label className="label">
+                                    <span className="label-text text-lg font-bold">Resume</span>
+                                </label>
+                                {
+                                    isResume ? <a target='blank' href={authUser?.profile?.resume} className='-mt-4 text-blue-500 w-full hover:underline cursor-pointer'>{authUser?.profile?.resumeOriginalName}</a> : <span>NA</span>
+                                }
                             </div>
                         </div>
-                        <div>
-                            <h1 className='font-medium text-xl'>{authUser?.fullName}</h1>
-                            <p>{authUser?.profile?.bio}</p>
-                        </div>
-                    </div>
-                    <button className='btn btn-outline btn-accent text-right' onClick={() => setOpen(true)}><MdModeEditOutline /></button>
-                </div>
-                <div className='my-5'>
-                    <div className='flex items-center gap-3 my-2'>
-                        <MdOutlineEmail />
-                        <span>{authUser?.email}</span>
-                    </div>
 
-                    <div className='flex items-center gap-3 my-2'>
-                        <LuContact />
-                        <span>{authUser?.phoneNumber}</span>
-                    </div>
-                </div>
-                <div>
-                    <h1>Skills</h1>
-                    <div className='flex items-center gap-1'>
-                        {
-                            authUser?.profile?.skills.length !== 0 ? authUser?.profile?.skills.map((item, index) => (
-                                <span className="badge badge-neutral" key={index}>{item}</span>
-                            )) : <span>NA</span>
+                        <h1 className='flex justify-center font-bold text-lg my-5 mx-2'>Applied Jobs</h1>
+                        {isError ? <p className='text-sm text-red-600 font-bold text-center my-3'>*You haven't applied any job yet</p> :
+                            <div className='max-w-4xl mx-auto bg-base-200 rounded-2-xl'>
+                                {/* Applied Job Table */}
+                                <AppliedJobTable getAppliedJobs={getAppliedJobs} />
+                            </div>
                         }
-                    </div>
-                </div>
-                <div className='grid w-full max-w-sm items-center gap-2'>
-                    <label className="label">
-                        <span className="label-text text-lg font-bold">Resume</span>
-                    </label>
-                    {
-                        isResume ? <a target='blank' href={authUser?.profile?.resume} className='-mt-4 text-blue-500 w-full hover:underline cursor-pointer'>{authUser?.profile?.resumeOriginalName}</a> : <span>NA</span>
-                    }
-                </div>
-            </div>
-            <h1 className='flex justify-center font-bold text-lg my-5 mx-2'>Applied Jobs</h1>
-            {isError ? <p className='text-sm text-red-600 font-bold text-center my-3'>*You haven't applied any job yet</p> :
-                <div className='max-w-4xl mx-auto bg-base-200 rounded-2-xl'>
-                    {/* Applied Job Table */}
-                    <AppliedJobTable getAppliedJobs={getAppliedJobs} />
-                </div>
+                    </>
             }
             <UpdateProfileModal open={open} setOpen={setOpen} authUser={authUser} />
         </div>

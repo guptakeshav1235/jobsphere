@@ -3,6 +3,7 @@ import Navbar from '../../shared/Navbar';
 import FilterCard from './FilterCard';
 import Job from './Job';
 import { motion } from 'framer-motion';
+import { useQuery } from '@tanstack/react-query';
 
 const Jobs = ({ getAllJobs, isLoading }) => {
     const jobs = getAllJobs;
@@ -46,42 +47,51 @@ const Jobs = ({ getAllJobs, isLoading }) => {
     return (
         <div>
             <Navbar />
-            <div className='flex max-w-7xl mx-auto mt-5 gap-5'>
-                <div className='w-[20%]'>
-                    <FilterCard
-                        selectedFilters={selectedFilters}
-                        setSelectedFilters={setSelectedFilters}
-                        getAllJobs={getAllJobs}
-                        isLoading={isLoading}
-                    />
-                </div>
-                {
-                    isLoading ? (
+            {
+                isLoading ?
+                    <>
                         <div>
-                            <span>Loading...</span>
+                            <span className='flex items-center justify-center'>Loading...</span>
                         </div>
-                    ) : filterJobs?.length === 0 ? (
-                        <span>Job not found</span>
-                    ) : (
-                        <div className='flex-1 h-[88vh] pb-5'>
-                            <div className='grid grid-cols-3 gap-4'>
-                                {
-                                    filterJobs?.map((job) => (
-                                        <motion.div
-                                            initial={{ opacity: 0, x: 100 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            exit={{ opacity: 0, x: -100 }}
-                                            transition={{ duration: 0.3 }}
-                                            key={job?.id}>
-                                            <Job job={job} />
-                                        </motion.div>
-                                    ))
-                                }
+                    </> :
+                    <>
+                        <div className='flex max-w-7xl mx-auto mt-5 gap-5'>
+                            <div className='w-[20%]'>
+                                <FilterCard
+                                    selectedFilters={selectedFilters}
+                                    setSelectedFilters={setSelectedFilters}
+                                    getAllJobs={getAllJobs}
+                                    isLoading={isLoading}
+                                />
                             </div>
+                            {
+                                filterJobs?.length === 0 ? (
+                                    // <span className="flex flex-col items-center justify-center w-full gap-3 p-4 border rounded-lg shadow-md bg-red-50 text-red-700 mt-6">
+                                    <span className="text-lg font-semibold">
+                                        *No Jobs Available...
+                                    </span>
+                                ) : (
+                                    <div className='flex-1 h-[88vh] pb-5'>
+                                        <div className='grid grid-cols-3 gap-4'>
+                                            {
+                                                filterJobs?.map((job) => (
+                                                    <motion.div
+                                                        initial={{ opacity: 0, x: 100 }}
+                                                        animate={{ opacity: 1, x: 0 }}
+                                                        exit={{ opacity: 0, x: -100 }}
+                                                        transition={{ duration: 0.3 }}
+                                                        key={job?.id}>
+                                                        <Job job={job} />
+                                                    </motion.div>
+                                                ))
+                                            }
+                                        </div>
+                                    </div>
+                                )
+                            }
                         </div>
-                    )
-                }
-            </div>
+                    </>
+            }
         </div>
     );
 };

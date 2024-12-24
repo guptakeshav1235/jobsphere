@@ -72,7 +72,7 @@ const JobDescription = () => {
             {
                 isJobLoading ? (
                     <div>
-                        <span>Loading...</span>
+                        <span className='flex justify-center'>Loading...</span>
                     </div>
                 ) :
                     <div className='max-w-7xl mx-auto my-10'>
