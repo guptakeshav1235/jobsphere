@@ -9,7 +9,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 
 const Home = () => {
-    const { getAllJobs } = useGetAllJobs();
+    const { getAllJobs, isLoading } = useGetAllJobs();
     const { data: authUser } = useQuery({ queryKey: ["authUser"] });
 
     const navigate = useNavigate();
@@ -23,7 +23,7 @@ const Home = () => {
             <Navbar />
             <HeroSection />
             <CategoryCarousel />
-            <LatestJobs getAllJobs={getAllJobs} />
+            <LatestJobs getAllJobs={getAllJobs} isLoading={isLoading} />
             <Footer />
         </div>
     )
