@@ -31,14 +31,14 @@ const Job = ({ job }) => {
                     </div>
                 </button>
                 <div>
-                    <h1 className='font-medium text-lg'>{job?.company?.name}</h1>
+                    <h1 className='font-medium text-lg line-clamp-1'>{job?.company?.name}</h1>
                     <p className='text-sm text-gray-500'>{job?.location}</p>
                 </div>
             </div>
 
             <div>
                 <h1 className='font-bold text-lg my-2'>{job?.title}</h1>
-                <p className='text-sm text-gray-600'>{job?.description}</p>
+                <p className='text-sm text-gray-600 line-clamp-1'>{job?.description}</p>
             </div>
             <div className='flex items-center gap-2 mt-4'>
                 <span className="badge badge-outline text-blue-700 font-bold">{job?.position} Positions</span>

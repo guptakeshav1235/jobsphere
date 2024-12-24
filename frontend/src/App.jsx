@@ -14,6 +14,7 @@ import CompanyInfo from './components/pages/admin/companiesPage/CompanyInfo'
 import AdminJobs from './components/pages/admin/jobsPage/AdminJobs'
 import PostJob from './components/pages/admin/jobsPage/PostJob'
 import Applicants from './components/pages/admin/applicantsPage/Applicants'
+import ProtectedRoutes from './components/pages/admin/ProtectedRoutes'
 
 function App() {
   const { getAllJobs, isLoading } = useGetAllJobs();
@@ -29,12 +30,12 @@ function App() {
         <Route path='/profile' element={<Profile />} />
 
         {/* Implementing routes for admin */}
-        <Route path='/admin/companies' element={<Companies />} />
-        <Route path='/admin/companies/create' element={<CreateCompany />} />
-        <Route path='/admin/companies/:id' element={<CompanyInfo />} />
-        <Route path='/admin/jobs' element={<AdminJobs />} />
-        <Route path='/admin/jobs/create' element={<PostJob />} />
-        <Route path='/admin/jobs/:id/applicants' element={<Applicants />} />
+        <Route path='/admin/companies' element={<ProtectedRoutes><Companies /></ProtectedRoutes>} />
+        <Route path='/admin/companies/create' element={<ProtectedRoutes><CreateCompany /></ProtectedRoutes>} />
+        <Route path='/admin/companies/:id' element={<ProtectedRoutes><CompanyInfo /></ProtectedRoutes>} />
+        <Route path='/admin/jobs' element={<ProtectedRoutes><AdminJobs /></ProtectedRoutes>} />
+        <Route path='/admin/jobs/create' element={<ProtectedRoutes><PostJob /></ProtectedRoutes>} />
+        <Route path='/admin/jobs/:id/applicants' element={<ProtectedRoutes><Applicants /></ProtectedRoutes>} />
       </Routes>
       <Toaster
         position="bottom-right"

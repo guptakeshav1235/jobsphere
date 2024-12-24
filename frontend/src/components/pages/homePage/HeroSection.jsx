@@ -1,7 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { BiSearch } from 'react-icons/bi'
+import { useNavigate } from 'react-router-dom';
 
 const HeroSection = () => {
+    const [query, setQuery] = useState("");
+    const navigate = useNavigate();
+
+    const searchJobHandler = () => {
+        if (query.trim()) {
+            navigate(`/browse?search=${encodeURIComponent(query)}`);;
+        }
+    };
+
     return (
         // <div className="hero bg-base-200 py-10">
         <div className="py-16">
@@ -19,9 +29,11 @@ const HeroSection = () => {
                     <input
                         type="text"
                         placeholder="Search by job title, keyword, or location"
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
                         className="input input-bordered w-full"
                     />
-                    <button className="btn btn-primary rounded-r-full">
+                    <button onClick={searchJobHandler} className="btn btn-primary rounded-r-full">
                         <BiSearch className='h-5 w-5' />
                     </button>
                 </div>

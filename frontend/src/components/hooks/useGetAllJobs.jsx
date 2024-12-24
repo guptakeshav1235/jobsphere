@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
 import React from 'react'
 
-const useGetAllJobs = () => {
+const useGetAllJobs = (keyword = "") => {
     const { data: getAllJobs = [], isLoading } = useQuery({
-        queryKey: ["allJobs"],
+        queryKey: ["allJobs", keyword],
         queryFn: async () => {
             try {
-                const res = await fetch('/url/api/job/get', {
+                const res = await fetch(`/url/api/job/get?keyword=${encodeURIComponent(keyword)}`, {
                     credentials: "include"
                 });
                 const data = await res.json();

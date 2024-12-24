@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../../shared/Navbar';
 import { Link, useNavigate } from 'react-router-dom';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import LoadingSpinner from '../../shared/LoadingSpinner';
 
@@ -17,6 +17,7 @@ const Signup = () => {
         file: ""
     });
 
+    const { data: authUser } = useQuery({ queryKey: ["authUser"] });
     const { mutate: register, isPending: isRegister } = useMutation({
         mutationFn: async (formData) => {
             try {
@@ -71,6 +72,12 @@ const Signup = () => {
 
         register(formData);
     }
+
+    useEffect(() => {
+        if (authUser) {
+            navigate('/')
+        }
+    }, [authUser]);
     return (
         <div className='h-screen overflow-hidden'>
             <Navbar />
