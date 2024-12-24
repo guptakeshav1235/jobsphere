@@ -12,7 +12,7 @@ const LatestJobs = ({ getAllJobs }) => {
                     getAllJobs.length <= 0 ? (
                         <span>No Jobs Available</span> // Message when no jobs are found
                     ) : (
-                        getAllJobs.slice(0, 6).map((job) => (
+                        getAllJobs.slice(0, 3).map((job) => (
                             <LatestJobCards key={job?.id} job={job} />
                         ))
                     )
