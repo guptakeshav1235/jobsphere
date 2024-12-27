@@ -149,6 +149,26 @@ namespace jobsphere.api.Migrations
                     b.ToTable("Jobs");
                 });
 
+            modelBuilder.Entity("jobsphere.api.Models.Domain.SavedJobs", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("JobId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SavedJobs");
+                });
+
             modelBuilder.Entity("jobsphere.api.Models.Domain.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -193,7 +213,6 @@ namespace jobsphere.api.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Bio")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProfilePhoto")
@@ -201,11 +220,9 @@ namespace jobsphere.api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Resume")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ResumeOriginalName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.PrimitiveCollection<string>("Skills")

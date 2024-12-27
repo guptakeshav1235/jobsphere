@@ -8,5 +8,6 @@ namespace jobsphere.api.Models.DTO
         public JobResponseDto Job { get; set; }
         public Guid ApplicantId { get; set; }
         public string Status { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

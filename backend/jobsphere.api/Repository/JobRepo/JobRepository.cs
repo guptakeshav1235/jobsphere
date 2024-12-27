@@ -25,7 +25,8 @@ namespace jobsphere.api.Repository.JobRepo
             return await dbContext.Jobs
                                    .Include(j=>j.Company)
                                    .Where(j => EF.Functions.Like(j.Title, $"%{keyword}") ||
-                                              EF.Functions.Like(j.Description, $"%{keyword}"))
+                                              EF.Functions.Like(j.Description, $"%{keyword}")||
+                                              EF.Functions.Like(j.Location, $"%{keyword}"))
                                    .OrderByDescending(j => j.CreatedAt)
                                    .ToListAsync();
         }
@@ -59,6 +60,7 @@ namespace jobsphere.api.Repository.JobRepo
             return await dbContext.Jobs
                                    .Include(j=>j.Applications)
                                         .ThenInclude(a=>a.Applicant)
+                                            .ThenInclude(a=>a.Profile)
                                    .FirstOrDefaultAsync(j => j.Id == jobId);
         }
     }

@@ -5,6 +5,7 @@ using jobsphere.api.Models.DTO;
 using jobsphere.api.Repository.ApplicationRepo;
 using jobsphere.api.Repository.JobRepo;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace jobsphere.api.Controllers
@@ -98,6 +99,7 @@ namespace jobsphere.api.Controllers
                 return NotFound(new { error = "Application not found" });
             }
             application.Status = updateStatusDto.Status.ToLower();
+            application.UpdatedAt = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
             await applicationRepository.UpdateApplicationAsync(application);
 
             return Ok(new { message = "Status updated successfully" });
