@@ -110,15 +110,26 @@ const Navbar = () => {
                                             <div className='p-4 text-[18px] font-medium flex flex-col gap-3 text-gray-600'>
                                                 {
                                                     authUser && authUser.role === 'student' && (
-                                                        <div className='flex w-fit items-center gap-4'>
-                                                            <FiUser />
-                                                            <a
-                                                                role="button"
-                                                                className="relative overflow-hidden before:absolute before:bottom-0 before:left-0 before:h-[2px] before:w-0 before:bg-current before:transition-all before:duration-300 hover:before:w-full"
-                                                            >
-                                                                <Link to='/profile'>View Profile</Link>
-                                                            </a>
-                                                        </div>
+                                                        <>
+                                                            <div className='flex w-fit items-center gap-4'>
+                                                                <FiUser />
+                                                                <a
+                                                                    role="button"
+                                                                    className="relative overflow-hidden before:absolute before:bottom-0 before:left-0 before:h-[2px] before:w-0 before:bg-current before:transition-all before:duration-300 hover:before:w-full"
+                                                                >
+                                                                    <Link to='/profile'>View Profile</Link>
+                                                                </a>
+                                                            </div>
+                                                            <div className='flex w-fit items-center gap-4'>
+                                                                <FiUser />
+                                                                <a
+                                                                    role="button"
+                                                                    className="relative overflow-hidden before:absolute before:bottom-0 before:left-0 before:h-[2px] before:w-0 before:bg-current before:transition-all before:duration-300 hover:before:w-full"
+                                                                >
+                                                                    <Link to='/saved/jobs'>SavedJobs</Link>
+                                                                </a>
+                                                            </div>
+                                                        </>
                                                     )
                                                 }
                                                 <div className='flex w-fit items-center gap-4'>

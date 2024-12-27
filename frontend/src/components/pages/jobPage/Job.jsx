@@ -1,10 +1,55 @@
-import React from 'react'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import React, { useState } from 'react'
+import toast from 'react-hot-toast';
 import { FaRegBookmark } from 'react-icons/fa6'
 import { useNavigate } from 'react-router-dom'
+import LoadingSpinner from '../../shared/LoadingSpinner';
+import { IoBookmark } from 'react-icons/io5';
 
 const Job = ({ job }) => {
     const navigate = useNavigate();
-    // const jobId = "qt21yiody32o43i";
+    const { data: getSavedJob } = useQuery({ queryKey: ["savedJob"] });
+    const queryClient = useQueryClient();
+
+    const [isBookmarkLoading, setIsBookmarkLoading] = useState(false);
+
+    const isSaved = getSavedJob?.some((savedJob) => savedJob.id === job?.id);
+
+    const { mutate: SavedJob, isPending: isSavingJob } = useMutation({
+        mutationFn: async (jobId) => {
+            try {
+                const res = await fetch('/url/api/saved/jobs', {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(jobId),
+                    credentials: "include"
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || "Something went wrong");
+                return data;
+            } catch (error) {
+                console.error(error);
+                throw error;
+            }
+        },
+        onMutate: () => setIsBookmarkLoading(true),
+        onSuccess: () => {
+            toast.success("Job saved successfully");
+            queryClient.invalidateQueries({ queryKey: ["savedJob"] });
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        },
+        onSettled: () => setIsBookmarkLoading(false)
+    });
+
+    const SavedJobHandler = (jobId) => {
+        if (!isSaved) {
+            SavedJob(jobId);
+        }
+    };
 
     const daysAgoFunc = (createdTime) => {
         const createdAt = new Date(createdTime);
@@ -16,8 +61,17 @@ const Job = ({ job }) => {
         <div className='p-5 rounded-md shadow-2xl bg-base-100 border border-gray-100'>
             <div className='flex items-center justify-between'>
                 <p className='text-sm text-gray-500'>{daysAgoFunc(job?.createdAt) === 0 ? "Today" : `${daysAgoFunc(job?.createdAt)}days ago`}</p>
-                <button className='btn rounded-full'>
-                    <FaRegBookmark />
+                <button
+                    onClick={() => SavedJobHandler(job?.id)}
+                    className='btn rounded-full'
+                >
+                    {isBookmarkLoading ? (
+                        <LoadingSpinner />
+                    ) : isSaved ? (
+                        <IoBookmark />
+                    ) : (
+                        <FaRegBookmark />
+                    )}
                 </button>
             </div>
             <div className='flex items-center gap-2 my-2'>
@@ -47,7 +101,19 @@ const Job = ({ job }) => {
             </div>
             <div className='flex items-center gap-4 mt-4'>
                 <button className='btn btn-outline btn-accent' onClick={() => navigate(`/job/description/${job?.id}`)}>Details</button>
-                <button className='btn text-white bg-[#6A38C2] hover:bg-[#461e89]'>Save For Later</button>
+                {
+                    isSavingJob ?
+                        <button className="btn text-white bg-[#6A38C2]" >
+                            <LoadingSpinner />
+                            Please Wait
+                        </button> :
+                        <button
+                            onClick={() => SavedJobHandler(job?.id)}
+                            className={`rounded-lg ${isSaved ? 'btn text-white bg-gray-500 cursor-not-allowed hover:bg-gray-500' : 'btn text-white bg-[#6A38C2] hover:bg-[#461e89]'}`}
+                        >
+                            {isSaved ? 'Already Saved' : 'Save For Later'}
+                        </button>
+                }
             </div>
         </div>
     )
