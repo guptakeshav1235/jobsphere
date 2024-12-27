@@ -5,6 +5,7 @@ using jobsphere.api.Repository.ApplicationRepo;
 using jobsphere.api.Repository.CloudinaryRepo;
 using jobsphere.api.Repository.CompanyRepo;
 using jobsphere.api.Repository.JobRepo;
+using jobsphere.api.Repository.SavedJobRepo;
 using jobsphere.api.Repository.TokenRepo;
 using jobsphere.api.Repository.UserRepo;
 using Microsoft.AspNetCore.CookiePolicy;
@@ -35,6 +36,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<IJobRepository, JobRepository>();
 builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
+builder.Services.AddScoped<ISavedJobRepository, SavedJobRepository>();
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 builder.Services.AddScoped<ICloudinaryRepository, CloudinaryRepository>();
 

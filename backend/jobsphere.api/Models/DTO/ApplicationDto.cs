@@ -6,5 +6,6 @@ namespace jobsphere.api.Models.DTO
     {
         public Guid ApplicationId { get; set; }
         public ApplicantDto Applicant { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

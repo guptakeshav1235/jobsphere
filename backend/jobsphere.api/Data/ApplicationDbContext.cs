@@ -15,6 +15,7 @@ namespace jobsphere.api.Data
         public DbSet<Job> Jobs { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<Application> Applications { get; set; }
+        public DbSet<SavedJobs> SavedJobs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
