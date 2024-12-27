@@ -36,7 +36,7 @@ const Login = () => {
             }
         },
         onSuccess: () => {
-            navigate('/');
+            // navigate('/');
             toast.success("User logged-in successfully");
             //refetch the authUser
             queryClient.invalidateQueries({ queryKey: ["authUser"] });
