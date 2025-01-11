@@ -69,7 +69,7 @@ namespace jobsphere.api.Controllers
                 //Generate Token and Set Cookie
                 tokenRepository.GenerateTokenAndSetCookie(newUser.Id, Response);
                 //return Ok after mapping Domain->Dto
-                return Ok(mapper.Map<UserResponseDto>(newUser));
+                return Ok(new { message = $"Welcome {newUser.FullName}", user = mapper.Map<UserResponseDto>(newUser) });
             }
 
             else
@@ -112,7 +112,7 @@ namespace jobsphere.api.Controllers
             tokenRepository.GenerateTokenAndSetCookie(user.Id, Response);
 
             //return Ok after mapping Domain->Dto
-            return Ok(mapper.Map<UserResponseDto>(user));
+            return Ok(new { message = $"Welcome {user.FullName}", user = mapper.Map<UserResponseDto>(user) });
         }
 
         [HttpPost("logout")]
