@@ -54,7 +54,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors(policy =>
-    policy.WithOrigins("http://localhost:3000")
+    policy.WithOrigins("https://jobsphere-beta.vercel.app/")
           .AllowAnyMethod()
           .AllowAnyHeader()
           .AllowCredentials());
