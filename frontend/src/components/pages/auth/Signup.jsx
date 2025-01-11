@@ -36,9 +36,9 @@ const Signup = () => {
                 throw error;
             }
         },
-        onSuccess: () => {
+        onSuccess: (data) => {
             navigate('/');
-            toast.success("Account created successfully");
+            toast.success(data.message);
             //refetch the authUser
             queryClient.invalidateQueries({ queryKey: ["authUser"] });
         },
