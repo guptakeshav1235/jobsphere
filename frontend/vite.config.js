@@ -10,7 +10,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/url': {
-        target: process.env.VITE_API_URL,
+        target: process.env.VITE_API_URL || 'http://localhost:5298',
         changeOrigin: true,
         rewrite: (path) => {
           console.log(`Proxying request: ${path}`); // Log proxy paths
