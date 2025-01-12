@@ -53,8 +53,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+var allowedOrigins = Environment.GetEnvironmentVariable("ALLOWED_ORIGINS")?.Split(';') ?? new[] { "https://jobsphere-beta.vercel.app" };
+
 app.UseCors(policy =>
-    policy.WithOrigins("https://jobsphere-beta.vercel.app")
+    policy.WithOrigins(allowedOrigins)
           .AllowAnyMethod()
           .AllowAnyHeader()
           .AllowCredentials());
