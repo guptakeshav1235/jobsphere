@@ -10,7 +10,7 @@ export default function handler(req, res) {
             '^/url': '', // Remove '/url' from the path
         },
         onProxyReq: (proxyReq, req) => {
-            // Include credentials (e.g., cookies)
+            // Forward cookies from the request to the proxy request
             if (req.headers.cookie) {
                 proxyReq.setHeader('cookie', req.headers.cookie);
             }
