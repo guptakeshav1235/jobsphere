@@ -5,6 +5,8 @@ import { FiLogOut, FiUser } from 'react-icons/fi'
 import { Link, useNavigate } from 'react-router-dom'
 import LoadingSpinner from './LoadingSpinner';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 const Navbar = () => {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
@@ -12,7 +14,7 @@ const Navbar = () => {
         queryKey: ["authUser"],
         queryFn: async () => {
             try {
-                const res = await fetch('/url/api/user/me', {
+                const res = await fetch(`${API_BASE_URL}/api/user/me`, {
                     credentials: "include"
                 });
                 const data = await res.json();
