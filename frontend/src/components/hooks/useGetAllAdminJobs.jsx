@@ -1,12 +1,14 @@
 import { useQuery } from '@tanstack/react-query'
 import React from 'react'
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 const useGetAllAdminJobs = () => {
     const { data: getAllAdminJobs } = useQuery({
         queryKey: ["allAdminJobs"],
         queryFn: async () => {
             try {
-                const res = await fetch('/url/api/job/getadminjobs', {
+                const res = await fetch(`${API_BASE_URL}/api/job/getadminjobs`, {
                     credentials: "include"
                 });
                 const data = await res.json();

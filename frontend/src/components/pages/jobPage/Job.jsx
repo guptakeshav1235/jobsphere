@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom'
 import LoadingSpinner from '../../shared/LoadingSpinner';
 import { IoBookmark } from 'react-icons/io5';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 const Job = ({ job }) => {
     const navigate = useNavigate();
     const { data: getSavedJob } = useQuery({ queryKey: ["savedJob"] });
@@ -18,7 +20,7 @@ const Job = ({ job }) => {
     const { mutate: SavedJob, isPending: isSavingJob } = useMutation({
         mutationFn: async (jobId) => {
             try {
-                const res = await fetch('/url/api/saved/jobs', {
+                const res = await fetch(`${API_BASE_URL}/api/saved/jobs`, {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json'

@@ -4,6 +4,8 @@ import toast from 'react-hot-toast';
 import { IoEllipsisHorizontal } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 const ApplicantsTable = ({ jobId }) => {
     const statusArray = ["Accepted", "Rejected"];
     const navigate = useNavigate();
@@ -12,7 +14,7 @@ const ApplicantsTable = ({ jobId }) => {
     const { mutate: updateStatus } = useMutation({
         mutationFn: async ({ status, id }) => {
             try {
-                const res = await fetch(`/url/api/application/${id}/status/update`, {
+                const res = await fetch(`${API_BASE_URL}/api/application/${id}/status/update`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"

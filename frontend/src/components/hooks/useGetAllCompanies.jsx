@@ -1,11 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 const useGetAllCompanies = () => {
     const { data: getAllCompanies } = useQuery({
         queryKey: ["allCompanies"],
         queryFn: async () => {
             try {
-                const res = await fetch('/url/api/company/get', {
+                const res = await fetch(`${API_BASE_URL}/api/company/get`, {
                     credentials: "include"
                 });
                 const data = await res.json();

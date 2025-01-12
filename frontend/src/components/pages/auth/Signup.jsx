@@ -5,6 +5,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import LoadingSpinner from '../../shared/LoadingSpinner';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 const Signup = () => {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
@@ -21,7 +23,7 @@ const Signup = () => {
     const { mutate: register, isPending: isRegister } = useMutation({
         mutationFn: async (formData) => {
             try {
-                const res = await fetch('url/api/user/register', {
+                const res = await fetch(`${API_BASE_URL}/api/user/register`, {
                     method: "POST",
                     body: formData,
                     credentials: "include"

@@ -5,6 +5,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 const Login = () => {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
@@ -18,7 +20,7 @@ const Login = () => {
     const { mutate: login, isPending: isLogin } = useMutation({
         mutationFn: async ({ email, password, role }) => {
             try {
-                const res = await fetch('url/api/user/login', {
+                const res = await fetch(`${API_BASE_URL}/api/user/login`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"

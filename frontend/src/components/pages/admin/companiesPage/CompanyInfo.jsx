@@ -7,6 +7,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import LoadingSpinner from '../../../shared/LoadingSpinner';
 import useGetCompanyById from '../../../hooks/useGetCompanyById';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 const CompanyInfo = () => {
     const [input, setInput] = useState({
         name: "",
@@ -24,7 +26,7 @@ const CompanyInfo = () => {
     const { mutate: updateCompany, isPending: isUpdateCompany } = useMutation({
         mutationFn: async (formData) => {
             try {
-                const res = await fetch(`/url/api/company/update/${companyId}`, {
+                const res = await fetch(`${API_BASE_URL}/api/company/update/${companyId}`, {
                     method: "PUT",
                     body: formData,
                     credentials: "include"
