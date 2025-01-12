@@ -9,6 +9,12 @@ export default function handler(req, res) {
         pathRewrite: {
             '^/url': '', // Remove '/url' from the path
         },
+        onProxyReq: (proxyReq, req) => {
+            // Include credentials (e.g., cookies)
+            if (req.headers.cookie) {
+                proxyReq.setHeader('cookie', req.headers.cookie);
+            }
+        },
     });
 
     proxy(req, res, (err) => {
