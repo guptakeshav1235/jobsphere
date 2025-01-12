@@ -4,13 +4,15 @@ import ApplicantsTable from './ApplicantsTable'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 const Applicants = () => {
     const { id: jobId } = useParams();
     const { data: getApplicants, isLoading: isApplicantsLoading } = useQuery({
         queryKey: ['applicants', jobId],
         queryFn: async () => {
             try {
-                const res = await fetch(`/url/api/application/${jobId}/applicants`, {
+                const res = await fetch(`${API_BASE_URL}/api/application/${jobId}/applicants`, {
                     credentials: "include"
                 });
 

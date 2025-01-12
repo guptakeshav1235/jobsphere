@@ -31,7 +31,7 @@ const Navbar = () => {
     const { mutate: logout } = useMutation({
         mutationFn: async () => {
             try {
-                const res = await fetch('/url/api/user/logout', {
+                const res = await fetch(`${API_BASE_URL}/api/user/logout`, {
                     method: "POST",
                     credentials: "include"
                 });

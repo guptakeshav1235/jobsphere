@@ -5,6 +5,8 @@ import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import LoadingSpinner from '../../../shared/LoadingSpinner';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 const CreateCompany = () => {
     const navigate = useNavigate();
     const [companyName, setCompanyName] = useState("");
@@ -12,7 +14,7 @@ const CreateCompany = () => {
     const { mutate: createCompany, isPending: isCreateCompany } = useMutation({
         mutationFn: async ({ companyName }) => {
             try {
-                const res = await fetch('/url/api/company/register', {
+                const res = await fetch(`${API_BASE_URL}/api/company/register`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"

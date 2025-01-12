@@ -3,12 +3,14 @@ import { useQuery } from '@tanstack/react-query';
 import Navbar from '../../shared/Navbar';
 import LatestJobCards from '../homePage/LatestJobCards';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 const SavedJob = () => {
     const { data: getSavedJob, isLoading } = useQuery({
         queryKey: ["savedJob"],
         queryFn: async () => {
             try {
-                const res = await fetch('/url/api/saved/jobs', {
+                const res = await fetch(`${API_BASE_URL}/api/saved/jobs`, {
                     credentials: "include"
                 });
                 const data = await res.json();

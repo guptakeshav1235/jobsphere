@@ -6,6 +6,8 @@ import LoadingSpinner from '../../../shared/LoadingSpinner';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 const PostJob = () => {
     const navigate = useNavigate();
     const [input, setInput] = useState({
@@ -25,7 +27,7 @@ const PostJob = () => {
     const { mutate: postJob, isPending: isPosting } = useMutation({
         mutationFn: async (input) => {
             try {
-                const res = await fetch('/url/api/job/post', {
+                const res = await fetch(`${API_BASE_URL}/api/job/post`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"

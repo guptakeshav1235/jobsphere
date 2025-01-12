@@ -5,6 +5,8 @@ import Navbar from '../../shared/Navbar';
 import toast from 'react-hot-toast';
 import LoadingSpinner from '../../shared/LoadingSpinner';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 const JobDescription = () => {
     const { id: jobId } = useParams();
     const { data: authUser } = useQuery({ queryKey: ["authUser"] });
@@ -16,7 +18,7 @@ const JobDescription = () => {
         queryKey: ["singlejob", jobId],
         queryFn: async () => {
             try {
-                const res = await fetch(`/url/api/job/get/${jobId}`, {
+                const res = await fetch(`${API_BASE_URL}/api/job/get/${jobId}`, {
                     credentials: "include"
                 });
                 const data = await res.json();
@@ -32,7 +34,7 @@ const JobDescription = () => {
     const { mutate: applyJob, isPending: isApplyJob } = useMutation({
         mutationFn: async () => {
             try {
-                const res = await fetch(`/url/api/application/apply/${jobId}`, {
+                const res = await fetch(`${API_BASE_URL}/api/application/apply/${jobId}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"

@@ -3,6 +3,8 @@ import LoadingSpinner from '../../shared/LoadingSpinner';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 const UpdateProfileModal = ({ open, setOpen, authUser }) => {
     const closeModal = () => setOpen(false);
     const queryClient = useQueryClient();
@@ -20,7 +22,7 @@ const UpdateProfileModal = ({ open, setOpen, authUser }) => {
     const { mutate: updateProfile, isPending: isUpdate } = useMutation({
         mutationFn: async (formData) => {
             try {
-                const res = await fetch('url/api/user/profile/update', {
+                const res = await fetch(`${API_BASE_URL}/api/user/profile/update`, {
                     method: "POST",
                     body: formData,
                     credentials: "include"
