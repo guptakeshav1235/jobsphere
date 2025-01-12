@@ -10,20 +10,13 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/url': {
-        target: process.env.VITE_API_URL || 'http://localhost:5298',
+        target: process.env.VITE_API_URL,
         changeOrigin: true,
-        secure: false, // Allow insecure connections for development
         rewrite: (path) => {
-          console.log(`Proxying request: ${path}`);
+          console.log(`Proxying request: ${path}`); // Log proxy paths
           return path.replace(/^\/url/, '');
         },
-        onProxyReq: (proxyReq, req) => {
-          // Forward cookies from frontend to backend
-          if (req.headers.cookie) {
-            proxyReq.setHeader('cookie', req.headers.cookie);
-          }
-        },
-      },
-    },
-  },
+      }
+    }
+  }
 })
