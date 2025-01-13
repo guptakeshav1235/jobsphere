@@ -15,7 +15,7 @@ const PostJob = () => {
         description: "",
         requirements: "",
         salary: "",
-        experience: "",
+        experienceLevel: "",
         location: "",
         jobType: "",
         position: 0,
@@ -128,8 +128,8 @@ const PostJob = () => {
                             </label>
                             <input
                                 type="text"
-                                name="experience"
-                                value={input.experience}
+                                name="experienceLevel"
+                                value={input.experienceLevel}
                                 onChange={changeEventHandler}
                                 className="input input-bordered w-full my-2"
                             />
